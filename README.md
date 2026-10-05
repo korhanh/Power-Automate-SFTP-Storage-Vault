@@ -18,7 +18,7 @@ Integrating external SFTP or legacy FTP servers into **Microsoft Power Automate*
 * **No Built-in Browser Inspection:** Troubleshooting failed flows requires third-party desktop tools (such as FileZilla) because standard cloud flows provide no visual directory explorer prior to execution.
 * **Plain FTP Incompatibilities:** Legacy plain FTP endpoints lack modern cloud connector support in Microsoft 365 environments.
 
-**Zetaleap SFTP / FTP Storage Vault** solves these challenges by functioning as a high-performance serverless TCP bridge running on Cloudflare's global edge network. It translates remote SFTP (Port 22) and FTP (Port 21) protocols into lightweight, predictable **RESTful JSON APIs**.
+**Zetaleap SFTP / FTP Storage Vault** solves these challenges by functioning as a high-performance serverless TCP bridge running on a distributed global edge network. It translates remote SFTP (Port 22) and FTP (Port 21) protocols into lightweight, predictable **RESTful JSON APIs**.
 
 With this gateway, Power Automate flows can list, stream, and download files using standard **HTTP REST actions**—bypassing gateway maintenance and connection timeouts.
 
@@ -42,9 +42,9 @@ flowchart LR
 Enterprise automation requires strict compliance and zero data-leakage guarantees:
 
 * **Zero Data Retention for Live Streams:** When listing directories or downloading files on-demand, the Zetaleap Gateway operates strictly as an in-memory streaming proxy. File content is streamed directly over encrypted TLS connections between the remote host and Power Automate; **no customer file contents are ever stored on disk or cached on gateway servers**.
-* **Isolated Vault Storage (R2):** Only when you explicitly configure **Automated Sync Schedules (Cron)** are files ingested into encrypted cloud object storage (Cloudflare R2, AES-256 at rest), fully partitioned per organization.
+* **Isolated Vault Storage:** Only when you explicitly configure **Automated Sync Schedules (Cron)** are files ingested into encrypted cloud object storage (Zetaleap Storage Vault, AES-256 at rest), fully partitioned per organization.
 * **Encrypted Credentials:** Remote SFTP passwords and SSH private keys (PEM) are encrypted at rest using industry-standard AES-256 encryption.
-* **Global Edge Infrastructure:** Deployed across Cloudflare's Tier IV data centers, adhering to strict GDPR and SOC2 compliance standards.
+* **Global Edge Infrastructure:** Deployed across Tier IV distributed edge data centers, adhering to strict GDPR and SOC2 compliance standards.
 * **Plain FTP Security Advisory:**
   > [!WARNING]
   > Plain FTP (Port 21) transmits authentication credentials and file payloads in unencrypted cleartext across the network. While supported for legacy compatibility, **SFTP (Port 22, SSH/TLS) is strongly recommended** for all production and enterprise workflows.
