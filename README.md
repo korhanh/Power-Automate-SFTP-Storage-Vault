@@ -236,12 +236,6 @@ Once files are listed, download and store them into a SharePoint document librar
 
 ---
 
-## 🔌 Future Roadmap: Custom Connector & OpenAPI
-
-An official OpenAPI v3 / Swagger specification is currently in development to allow one-click **Custom Connector** import into Power Platform solutions, further simplifying flow authoring without manual HTTP action configuration.
-
----
-
 ## 📋 Requirements
 
 * Microsoft Power Automate subscription (Cloud Flows with Premium HTTP access)
