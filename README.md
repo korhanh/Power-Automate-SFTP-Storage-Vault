@@ -41,8 +41,8 @@ flowchart LR
 
 Enterprise automation requires clear visibility into how credentials and data are handled:
 
-* **Streaming Architecture (Privacy-by-Design):** For live directory listings and on-demand file downloads, the gateway operates strictly as an in-memory streaming proxy. File payloads are transferred in flight and are **never written to disk or cached** on gateway servers.
-* **Transport Encryption:** All traffic between Power Automate and the Zetaleap Gateway is enforced over **HTTPS (TLS 1.3)**. For remote connections, SFTP operates over **SSH (Port 22)**.
+* **Streaming Architecture (Privacy-by-Design):** For live directory listings and on-demand file downloads, the gateway operates strictly as an in-memory streaming proxy. By design, file payloads are transferred in flight and are never written to persistent local disk storage or cached on gateway servers. Only standard operational metadata (request timestamp, HTTP status, endpoint path) is retained temporarily for rate limiting and diagnostic telemetry.
+* **Transport Encryption:** All traffic between Power Automate and the Zetaleap Gateway is encrypted over modern **HTTPS (TLS 1.2 or higher)**. For remote server connections, SFTP operates over **SSH (Port 22)**.
 * **Dedicated Vault Storage:** Only when you explicitly configure **Automated Sync Schedules (Recurring Cron Tasks)** are files stored in encrypted cloud storage (AES-256 at rest), fully partitioned per account.
 * **Credential Protection:** Remote server passwords and SSH private keys (PEM) are stored with industry-standard AES-256 encryption at rest.
 * **Plain FTP Security Advisory:**
@@ -77,11 +77,11 @@ Enterprise automation requires clear visibility into how credentials and data ar
 > **Prerequisites & Best Practices:**
 > * **Licensing Note:** The `HTTP` action in Power Automate requires a **Power Automate Premium** or per-user/process license.
 > * **Connection Identifiers:** In the examples below, `rebex` refers to the public demo SFTP profile. In your own flows, replace `rebex` with your custom connection slug/ID registered in the portal (e.g., `https://zetaleap.com/api/sftp/{your_connection_id}`).
-> * **Token Security:** Do not hardcode Personal Access Tokens (PAT) in plain text within production flows. Store your token in a **Power Automate Solution Environment Variable** or **Azure Key Vault**, and turn on **Settings > Secure Inputs** and **Secure Outputs** on HTTP actions to prevent token exposure in flow run history logs.
+> * **Token Security:** Do not hardcode Personal Access Tokens (PAT) in plain text within production flows. Store your token in a **Power Automate Solution Environment Variable** or **Azure Key Vault**, reference that dynamic value in the `Authorization: Bearer <token>` header, and turn on **Settings > Secure Inputs** and **Secure Outputs** on HTTP actions to prevent token exposure in flow run history logs.
 
 ### Scenario 1: List Remote SFTP Files in Power Automate
 
-Add a standard **HTTP** action to your Cloud Flow:
+Add a standard **HTTP` action to your Cloud Flow:
 
 1. **Add Action:** `HTTP`
 2. **Method:** `GET`
@@ -153,7 +153,7 @@ Once files are listed, download and store them into a SharePoint document librar
 
 1. **Add Action:** `Apply to each` using `body('Parse_JSON')?['files']`
 2. **Add Condition:** `item()?['is_dir'] is equal to false`
-3. **Add Action inside Condition:** `HTTP (Download Remote File)`
+3. **Add Action inside Condition:** `HTTP` *(Rename this action to `HTTP_Download`)*
    * **Method:** `GET`
    * **URI (URL-Encoded):** 
      ```http
