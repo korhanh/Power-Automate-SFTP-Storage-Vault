@@ -42,6 +42,15 @@ flowchart LR
 * **🗑️ Complete Endpoint Lifecycle Management:** Add, configure, test, and safely delete custom connection profiles directly from the web interface.
 * **🛡️ Enterprise Role-Based Access Control:** Protect sensitive automated background cron tasks with administrator-only permissions.
 
+> [!IMPORTANT]
+> ### 🔒 Administrative Authorization Required for Automated Sync Schedules
+>
+> While all registered users with an active Personal Access Token (API Key) can configure remote connections, browse files in **Live Explorer**, and integrate on-demand file transfers directly within **Microsoft Power Automate**, setting up **Automated Sync Schedules (Recurring Cron Tasks)** requires elevated privileges:
+>
+> * **Role-Based Protection:** Creating, modifying, or triggering scheduled synchronization tasks requires system administrator privileges or explicit **SFTP Cron** authorization granted by a system administrator in the Admin Portal.
+> * **Resource Protection:** This policy safeguards enterprise network bandwidth and cloud storage resources against accidental high-frequency polling or unauthorized loop executions.
+> * **Requesting Schedule Access:** Non-admin users attempting to configure automated sync schedules will be presented with a Security Alert prompt. To request cron schedule permissions for your account, contact the system administration team at [support_team@zetaleap.com](mailto:support_team@zetaleap.com).
+
 ---
 
 ## 🚀 Power Automate Integration Guide
